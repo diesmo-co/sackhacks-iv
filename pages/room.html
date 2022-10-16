@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudocore</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/8591ab726f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section id="header" class="bg-light py-3">
+        <h6 class="text-primary text-center fw-bold">
+            Rooms
+        </h6>
+    </section>
+    <section id="data" class="py-5">
+        <div id="parameter-select" class="container">
+            <div class="row">
+                <div class="col-6 py-3">
+                    <h6 class="">Unit</h6>
+                    <a href="" class="btn btn-primary">kW</a>
+                    <a href="" class="btn btn-outline-primary">Hours</a>
+                </div>
+            </div>
+        </div>
+        <div id="plots" class="container">
+            <img src="https://images.unsplash.com/photo-1634542984003-e0fb8e200e91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80" alt="" class="w-100">
+        </div>
+        <div id="time-span-select" class="container">
+            <div class="row">
+                <div class="col-12 py-3">
+                    <div class="row">
+                        <div class="col-3">
+                            <a href="" class="btn btn-outline-primary w-100">Last Day</a>
+                        </div>
+                        <div class="col-3">
+                            <a href="" class="btn btn-outline-primary w-100">Last Week</a>
+                        </div>
+                        <div class="col-3">
+                            <a href="" class="btn btn-outline-primary w-100">Last Month</a>
+                        </div>
+                        <div class="col-3">
+                            <a href="" class="btn btn-outline-primary w-100">Last Year</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="temperature" class="col-12 py-3">
+                <h6 class="">TEMPERATURE</h6>
+                <div class="row">
+                    <div class="col-3 pt-2 pb-3">
+                        <a href="" class="btn btn-primary w-100"><i class="fa-solid fa-temperature-three-quarters fa-3x"></i></a>
+                    </div>
+                    <div class="col-3 pt-2 pb-3">
+                        <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="temperature"><i class="fa-solid fa-plus fa-3x"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="lights" class="col-12 py-3">
+                <h6 class="">LIGHTS</h6>
+                <div class="row">
+                    <div class="col-3 pt-2 pb-3">
+                        <a href="" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"></i></a>
+                    </div>
+                    <div class="col-3 pt-2 pb-3">
+                        <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="lights"><i class="fa-solid fa-plus fa-3x"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="appliances" class="col-12 py-3">
+                <h6 class="">APPLIANCES</h6>
+                <div class="row">
+                    <div class="col-3 pt-2 pb-3">
+                        <a href="" class="btn btn-primary w-100"><i class="fa-solid fa-bolt-lightning fa-3x"></i></a>
+                    </div>
+                    <div class="col-3 pt-2 pb-3">
+                        <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="appliances"><i class="fa-solid fa-plus fa-3x"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="security" class="col-12 py-3">
+                <h6 class="">SECURITY</h6>
+                <div class="row">
+                    <div class="col-3 pt-2 pb-3">
+                        <a href="" class="btn btn-primary w-100"><i class="fa-solid fa-shield fa-3x"></i></a>
+                    </div>
+                    <div class="col-3 pt-2 pb-3">
+                        <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="security"><i class="fa-solid fa-plus fa-3x"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="bottom-nav-bar" class="bg-primary text-center py-3">
+        home
+    </footer>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><i class="fa-solid fa-plus fa-3x"></i></button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Open modal for @fat</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Name:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Room:</label>
+            <select name="room" id="room">
+                <option value="Room 1">Room 1</option>
+            </select>
+            <!-- <input type="" class="form-control" id="recipient-name"> -->
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Type:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
