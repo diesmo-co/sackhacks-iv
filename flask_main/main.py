@@ -3,9 +3,11 @@
 # description:
 
 # Imports
+from ctypes import sizeof
 from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
 import plotly.express as px
+import csv
 
 
 # dataframes for csv files
@@ -22,6 +24,10 @@ rooms_ids = rooms_df['room_id']
 rooms_idlist = rooms_ids.values.tolist()
 size = len(roomslist)
 
+# list for devices
+device_ids = devices_df['device_id']
+device_idslist = device_ids.values.tolist()
+
 
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
 # 2. DONE: Creating Flask Routes for endpoint
@@ -36,110 +42,161 @@ app = Flask(__name__)
 # devicepage 
 
 
-size = len(roomslist)
-@app.route("/")
-@app.route("/<display_type>/<unit>/<time>")
+@app.route("/", methods = ["POST","GET"])
+@app.route("/<display_type>/<unit>/<time>", methods = ["POST","GET"])
 def home(display_type="room", unit="kw", time="last-year"):
     
-    # Assumes that the latest record is 2021-12-31, which is true for our dataset
-    time_interval = {
-        "last-day": '2021-12-30',
-        "last-week": '2021-12-25',
-        "last-month": '2021-12-01',
-        "last-year": '2021-01-01' 
-    }
-    oldest_time = time_interval[time]
-    
-    color = "room_name" if display_type == "room" else "device_type"
-    
-    line_chart = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
-                                    devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
-                           how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
-                  x="timestamp", y="device_kwh", color=color)
-    
-    pie_chart = None 
-    return render_template("index.html", line_chart=line_chart.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
-
-
-# # below need to get some parameter to know which room to go
-@app.route("/room/<room_id>/")
-def roompage(room_id):
-    # TODO: check the html page name
-    # TODO: check the header variable name
-    # TODO: potentially pass the graph information& list of devices
-    room_name = roomslist[int(room_id)-1]
-
-    # get all devices from this room
-    choosen_room = "room_id == "+(room_id)
-    devices_in_room = devices_df.query(choosen_room)
-
-    # TODO: names of device type changes based on Yiheng's csv
-    # all device in device_type lights  
-    lights_in_room = devices_in_room.query('device_type == "lights"')
-    lightsdevices = lights_in_room['device_name']
-    lightdeviceslist = lightsdevices.values.tolist()
-
-    # all device in device_type temperature  
-    temperature_in_room = devices_in_room.query('device_type == "temperature"')
-    temperaturedevices = temperature_in_room['device_name']
-    temperaturedeviceslist = temperaturedevices.values.tolist()
-    
-    # all device in device_type appliances  
-    appliances_in_room = devices_in_room.query('device_type == "appliances"')
-    appliancesdevices = appliances_in_room['device_name']
-    appliancesdeviceslist = appliancesdevices.values.tolist()
-    
-    # all device in device_type security  
-    security_in_room = devices_in_room.query('device_type == "security"')
-    securitydevices = security_in_room['device_name']
-    securitydeviceslist = securitydevices.values.tolist()
-
-    # filter the dataframe to get all the devices
-    # df_devices = rooms_df.filter()
-
-    
-    # filter the dataframe devices unit categories
-    '''df_statistics = rooms_df.filter()'''
-
-    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist, room_list=roomslist)
-
-# devicepage pop up for creating new device
-@app.route("/newdevice", methods=["POST","GET"])
-def newdevice():
     if request.method == "POST":
-        # new device name get the parameter using post
-        # TODO: check the variable name for the form
-        device_name = request.form["device_name"]
+        newroom = request.form["roomname"]
+        newid = int(rooms_idlist[size-1])+1
 
-        # TODO: check the variable name for the form
-        room_id = request.form["room_id"]
+        # TODO: create the new room in csv
+        # create the csv writer
+        with open('../Rooms.csv','a') as f:
+            f.write(str(newid)+","+newroom)
+            f.write("\n")
+        # write a row to the csv file
+        # close the file
+        f.close()      
 
-        # TODO: check the variable name for the form
-        device_type = request.form["device_type"]
+        return redirect(url_for("updateload"))
 
-        # TODO: check the variable name for the form
-        device_kWh = request.form["device_kWh"]
-        
-
-        # new device id to be added to csv
-        # device_id
-        # TODO: go to csv, max(device_id)+1 will be new id
-
-        # TODO:pass the room_name to the roompage
-        return redirect(url_for("device.html", device_name = device_name))
     else:
-        # TODO: check the html page name
-        # TODO ? : pass a list of available room for the dropdown options
-        return render_template("newdevice.html")
+        # Assumes that the latest record is 2021-12-31, which is true for our dataset
+        time_interval = {
+            "last-day": '2021-12-30',
+            "last-week": '2021-12-25',
+            "last-month": '2021-12-01',
+            "last-year": '2021-01-01' 
+        }
+        oldest_time = time_interval[time]
 
+        color = "room_name" if display_type == "room" else "device_type"
 
-@app.route("/d=<device_name>")
-def devicepage(device_name):
-    # TODO: check the html page name
-    # TODO: check the header variable name
-    # TODO ? : potentially pass the graph & list of devices information
+        fig = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+                                        devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
+                               how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
+                      x="timestamp", y="device_kwh", color=color)
+        return render_template("index.html", fig=fig.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+   
+@app.route("/load")
+def updateload():
+    global rooms_df
+    global rooms
+    global roomslist
+    global rooms_ids
+    global rooms_idlist
+    global size
+    rooms_df = pd.read_csv("../Rooms.csv")
+    rooms = rooms_df['room_name']
+    roomslist = rooms.values.tolist()
+    rooms_ids = rooms_df['room_id']
+    rooms_idlist = rooms_ids.values.tolist()
+    size = len(roomslist)
+    id=rooms_idlist[len(rooms_idlist)-1]
 
-    return render_template("device.html", device_name=device_name)
+    return redirect(url_for("roompage", room_id=str(id)))
+
+# below need to get some parameter to know which room to go
+@app.route("/room/<room_id>/", methods = ["POST","GET"])
+def roompage(room_id, ):
+    if request.method == "POST":
+        newdevice_id = int(device_idslist[len(device_idslist)-1])+1
+        newdevice_name = request.form["devicename"]
+        newdevice_roomid = request.form["roomid"]
+        newdevice_type = request.form["device_type"]
+        newdevice_power = request.form["devicepower"]
+
+        # TODO: create the new room in csv
+        # create the csv writer
+        with open('../Devices.csv','a') as f:
+            f.write(str(newdevice_id)+","+newdevice_name+","+newdevice_roomid+","+newdevice_type+","+newdevice_power)
+            f.write("\n")
+        # write a row to the csv file
+        # close the file
+        f.close()   
+
+        
+        global devices_df
+        devices_df = pd.read_csv("../Devices.csv")
+        # TODO: IMPLEMENT THE PARAMETER PASSING
+        return redirect(url_for("devicepage", device_id=newdevice_id))
+
+    else:
+        room_name = roomslist[int(room_id)-1]
+
+        # get all devices from this room
+        choosen_room = "room_id == "+(room_id)
+        devices_in_room = devices_df.query(choosen_room)
+
+        # all device in device_type lights  
+        lights_in_room = devices_in_room.query('device_type == "lights"')
+        lightsdevices = lights_in_room['device_name']
+        lightsdevices_id = lights_in_room['device_id']
+        lightdeviceslist_id = lightsdevices_id.values.tolist()
+        lightdeviceslist = lightsdevices.values.tolist()
+
+        # all device in device_type temperature  
+        temperature_in_room = devices_in_room.query('device_type == "temperature"')
+        temperaturedevices = temperature_in_room['device_name']
+        temperaturedevices_id = temperature_in_room['device_id']
+        temperaturedeviceslist_id = temperaturedevices_id.values.tolist()
+        temperaturedeviceslist = temperaturedevices.values.tolist()
+        
+        # all device in device_type appliances  
+        appliances_in_room = devices_in_room.query('device_type == "appliances"')
+        appliancesdevices = appliances_in_room['device_name']
+        appliancesdevices_id = appliances_in_room['device_id']
+        appliancesdeviceslist_id = appliancesdevices_id.values.tolist()
+        appliancesdeviceslist = appliancesdevices.values.tolist()
+        
+        # all device in device_type security  
+        security_in_room = devices_in_room.query('device_type == "security"')
+        securitydevices = security_in_room['device_name']
+        securitydevices_id = security_in_room['device_id']
+        securitydeviceslist_id = securitydevices_id.values.tolist()
+        securitydeviceslist = securitydevices.values.tolist()
+
+        lightsize = len(lightdeviceslist)
+        tempsize = len(temperaturedeviceslist)
+        appsize = len(appliancesdeviceslist)
+        sersize = len(securitydeviceslist)
+
+        return render_template("room.html", Rooms=room_name, 
+        light_list=lightdeviceslist, light_id=lightdeviceslist_id, lsize=lightsize,
+        temperature_list=temperaturedeviceslist, temp_id=temperaturedeviceslist_id, tsize=tempsize,
+        appliance_list=appliancesdeviceslist, app_id=appliancesdeviceslist_id, asize=appsize,
+        security_list=securitydeviceslist, ser_id=securitydeviceslist_id, ssize=sersize,
+        room_list=rooms_idlist)
+
+@app.route("/d=<device_id>", methods = ["POST","GET"])
+def devicepage(device_id):
+    if request.method == "POST":
+        global devices_df
+        newdevice_name = request.form["device_name"]
+        newdevice_room = request.form["roomid"]
+        newdevice_type = request.form["device_type"]
+        newdevice_power = request.form["device_power"]
+        
+        idx = int(device_id)
+        # updating the column value/data
+        #if newdevice_name:
+        devices_df.loc[idx, 'device_name'] = newdevice_name
+        #if newdevice_room:
+        devices_df.loc[idx, 'room_id'] = newdevice_room
+        #if newdevice_type:
+        devices_df.loc[idx, 'device_type'] = newdevice_type
+        #if newdevice_power:
+        devices_df.loc[idx, 'device_kwh'] = newdevice_power
+        # writing into the file
+        devices_df.to_csv("../Devices.csv", index=False)
+        
+        devices_df = pd.read_csv("../Devices.csv")
+
+        return render_template("device.html", device_id=device_id, roomsize=int(size), room_name=roomslist, room_id=rooms_idlist)
+        
+    else:
+        return render_template("device.html", device_id=device_id, roomsize=int(size), room_name=roomslist, room_id=rooms_idlist)
 
 
 if __name__ == "__main__":
