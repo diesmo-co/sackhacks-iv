@@ -34,78 +34,86 @@ app = Flask(__name__)
 def home(display_type="room", unit="kw", time="last-year"):
     return render_template("index.html", display_type=display_type, unit=unit, time=time)
 
-# # roompage pop up for creating new room
-# @app.route("/newroom", methods=["POST","GET"])
-# def newroom():
-#     if request.method == "POST":
-#         # new room name get the parameter using post
-#         # TODO: check the variable name for the form
-#         room_name = request.form["room_name"]
-#         # new room id to be added to csv
-#         # room_id
-#         # TODO: go to csv, max(room_id)+1 will be new id
-
-#         # TODO:pass the room_name to the roompage
-#         return redirect(url_for("roompage", room_name = room_name))
-#     else:
-#         # TODO: check the html page name
-#         return render_template("newroom.html")
-
 # # below need to get some parameter to know which room to go
 @app.route("/room/<room_name>/")
 def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
+    room_name = roomslist[int(room_id)]
 
-    return render_template("room.html")
+    # get all devices from this room
+    choosen_room = "room_id == "+room_id
+    devices_in_room = devices_df.query(choosen_room)
 
-# # devicepage pop up for creating new device
-# @app.route("/newdevice", methods=["POST","GET"])
-# def newdevice():
-#     if request.method == "POST":
-#         # new device name get the parameter using post
-#         # TODO: check the variable name for the form
-#         device_name = request.form["device_name"]
+    # TODO: names of device type changes based on Yiheng's csv
+    # all device in device_type lights  
+    lights_in_room = devices_in_room.query('device_type == "lights"')
+    lightsdevices = lights_in_room['device_name']
+    lightdeviceslist = lightsdevices.values.tolist()
 
-#         # TODO: check the variable name for the form
-#         room_id = request.form["room_id"]
+    # all device in device_type temperature  
+    temperature_in_room = devices_in_room.query('device_type == "temperature"')
+    temperaturedevices = temperature_in_room['device_name']
+    temperaturedeviceslist = temperaturedevices.values.tolist()
+    
+    # all device in device_type appliances  
+    appliances_in_room = devices_in_room.query('device_type == "appliances"')
+    appliancesdevices = appliances_in_room['device_name']
+    appliancesdeviceslist = appliancesdevices.values.tolist()
+    
+    # all device in device_type security  
+    security_in_room = devices_in_room.query('device_type == "security"')
+    securitydevices = security_in_room['device_name']
+    securitydeviceslist = securitydevices.values.tolist()
 
-#         # TODO: check the variable name for the form
-#         device_type = request.form["device_type"]
+    # filter the dataframe to get all the devices
+    # df_devices = rooms_df.filter()
 
-#         # TODO: check the variable name for the form
-#         device_kWh = request.form["device_kWh"]
+    
+    # filter the dataframe devices unit categories
+    '''df_statistics = rooms_df.filter()'''
+
+    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist)
+
+# devicepage pop up for creating new device
+@app.route("/newdevice", methods=["POST","GET"])
+def newdevice():
+    if request.method == "POST":
+        # new device name get the parameter using post
+        # TODO: check the variable name for the form
+        device_name = request.form["device_name"]
+
+        # TODO: check the variable name for the form
+        room_id = request.form["room_id"]
+
+        # TODO: check the variable name for the form
+        device_type = request.form["device_type"]
+
+        # TODO: check the variable name for the form
+        device_kWh = request.form["device_kWh"]
         
 
-#         # new device id to be added to csv
-#         # device_id
-#         # TODO: go to csv, max(device_id)+1 will be new id
+        # new device id to be added to csv
+        # device_id
+        # TODO: go to csv, max(device_id)+1 will be new id
 
-#         # TODO:pass the room_name to the roompage
-#         return redirect(url_for("devicepage.html", device_name = device_name))
-#     else:
-#         # TODO: check the html page name
-#         # TODO ? : pass a list of available room for the dropdown options
-#         return render_template("home.html")
+        # TODO:pass the room_name to the roompage
+        return redirect(url_for("device.html", device_name = device_name))
+    else:
+        # TODO: check the html page name
+        # TODO ? : pass a list of available room for the dropdown options
+        return render_template("newdevice.html")
 
 
-@app.route("/device/<device_name>/")
+@app.route("/d=<device_name>")
 def devicepage(device_name):
-#     # TODO: check the html page name
-#     # TODO: check the header variable name
-#     # TODO ? : potentially pass the graph & list of devices information
+    # TODO: check the html page name
+    # TODO: check the header variable name
+    # TODO ? : potentially pass the graph & list of devices information
 
-    return render_template("device.html")
+    return render_template("device.html", device_name=device_name)
 
-# @app.route("/get<device_name>")
-# def getfig(device_name):
-#     # TODO: check the html page name
-#     # TODO: check the header variable name
-#     # TODO ? : potentially pass the graph & list of devices information
-
-#     return ("devicepage.html", device_name=device_name)
 
 if __name__ == "__main__":
     app.run(debug = True)
-
