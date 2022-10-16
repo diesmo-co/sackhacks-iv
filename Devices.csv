@@ -1,8 +1,8 @@
 device_id,device_name,room_id,device_type,device_kwh
 0,TP-Link Tapo Smart Cam 0,2,security,12.16
-1,Nest T3021US Learning Thermostat 1,1,temperature,3.11
+1,NEW NAME 00000000000,1,security,20000000000000.0
 2,Belkin WeMo Smart Light Switch 2,4,lights,11.66
-3,August Smart Lock 3,1,security,4.43
+3,NEW NAME,1,temperature,20000000000000.0
 4,Belkin WeMo Smart Light Switch 4,4,lights,2.39
 5,Alexa 5,4,appliances,49.06
 6,Bitdefender BOX IoT Security Solution 6,3,security,10.48
@@ -17,7 +17,7 @@ device_id,device_name,room_id,device_type,device_kwh
 15,TP-Link Tapo Smart Cam 15,3,security,3.59
 16,Amazon Echo 16,3,appliances,20.62
 17,Samson Smart Fridge 17,4,appliances,55.04
-18,ThermoPro TP50 Digital Hygrometer 18,2,temperature,6.2
+18,NEW NAME 00000000000,1,temperature,20000000000000.0
 19,Bitdefender BOX IoT Security Solution 19,1,security,18.9
 20,Alexa 20,1,appliances,40.24
 21,Nest T3021US Learning Thermostat 21,2,temperature,5.48
@@ -29,7 +29,7 @@ device_id,device_name,room_id,device_type,device_kwh
 27,Bitdefender BOX IoT Security Solution 27,4,security,8.07
 28,Bitdefender BOX IoT Security Solution 28,3,security,9.71
 29,HOBO Temperature Data Logger 29,4,temperature,1.73
-30,Samson Smart Fridge 30,2,appliances,18.16
+30,NEW NAME 00000000000,1,temperature,20000000000000.0
 31,Google Home 31,4,appliances,20.7
 32,ThermoPro TP50 Digital Hygrometer 32,4,temperature,1.78
 33,August Smart Lock 33,4,security,10.65
@@ -39,3 +39,6 @@ device_id,device_name,room_id,device_type,device_kwh
 37,Google Home 37,1,appliances,30.46
 38,SwitchBot Smart Hygrometer Thermometer 38,2,temperature,0.91
 39,Google Home 39,3,appliances,20.32
+40,NEW NAME 00000000000,6,temperature,1.0
+41,NEW NAME 00000000000,5,temperature,20000000000000.0
+42,NEW NAME 00000000000,7,temperature,53456
