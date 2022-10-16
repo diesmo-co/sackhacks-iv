@@ -110,8 +110,8 @@
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Room:</label>
                         <select name="roomid" id="roomid">
-                            {% for room in room_list: %}
-                            <option value="{{room}}">{{room}}</option>
+                            {% for x in range(0,roomsize): %}
+                            <option value="{{room_id[x]}}">{{room_list[x]}}</option>
                             {% endfor %}
                         </select>
                     </div>
