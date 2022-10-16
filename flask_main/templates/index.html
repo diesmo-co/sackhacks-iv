@@ -32,11 +32,9 @@
     </div>
   </div>
   <div id="plots" class="container">
-    <img
-      src="https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2242&q=80"
-      alt=""
-      class="w-100"
-    />
+    {% autoescape off %}
+    {{ fig }}
+    {% endautoescape %}
     <img
       src="https://images.unsplash.com/photo-1639389016105-2fb11199fb6b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
       alt=""
@@ -45,11 +43,9 @@
   </div>
 </section>
 <section id="room-list" class="container">
-    {% 
-    for x in range(0, size): %}
+    {% for x in range(0, size): %}
         <!-- Insert room name -->
         <a href="/room/{{room_id[x]}}" class="btn btn-lg btn-primary w-100 mb-3">{{room_list[x]}}</a>
-
     {% endfor %}
     <a href="/newroom" class="btn btn-lg btn-outline-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="security">+ Add Room</a>
 </section>
