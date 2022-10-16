@@ -22,9 +22,10 @@ rooms_idlist = rooms_ids.values.tolist()
 size = len(roomslist)
 
 
-print(rooms_df.head())
+'''print(rooms_df.head())
 print(devices_df.head())
-print(datalog_df.head())
+print(datalog_df.head())'''
+
 # TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
 # 2. DONE: Creating Flask Routes for endpoint
@@ -39,16 +40,16 @@ app = Flask(__name__)
 # devicepage 
 
 
-
+size = len(roomslist)
 @app.route("/")
 @app.route("/<display_type>/<unit>/<time>")
 def home(display_type="room", unit="kw", time="last-year"):
-    return render_template("index.html", display_type=display_type, unit=unit, time=time)
+    return render_template("index.html", display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
 
 
 # # below need to get some parameter to know which room to go
 @app.route("/room/<room_name>/")
-def roompage(room_name):
+def roompage(room_id):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
