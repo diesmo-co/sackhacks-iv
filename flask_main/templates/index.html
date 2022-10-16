@@ -47,7 +47,7 @@
 <section id="room-list" class="container">
     {% for x in range(0, size): %}
         <!-- Insert room name -->
-        <a href="/r={{room_id[x]}}" class="btn btn-lg btn-primary w-100 mb-3">{{room_list[x]}}</a>
+        <a href="/room/{{room_id[x]}}" class="btn btn-lg btn-primary w-100 mb-3">{{room_list[x]}}</a>
     {% endfor %}
     <a href="/newroom" class="btn btn-lg btn-outline-primary w-100 mb-3">+ Add Room</a>
 </section>
