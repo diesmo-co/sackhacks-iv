@@ -34,20 +34,31 @@
                 </div>
             </div>
         </div>
-        <div id="information" class="col-12 py-3">
-            <h6 class="">Information</h6>
-            <label for="device-id">Device ID:</label>
-            <input type="text" id="device-id" name="device-id"><br><br>
-            <label for="device-name">Name:</label>
-            <input type="text" id="device-name" name="device-name"><br><br>
-            <label for="device-room">Room:</label>
-            <select name="room" id="room">
-                <option value="Room 1">Room 1</option>
-            </select>
-            <label for="device-type">Type:</label>
-            <input type="text" id="device-type" name="device-type"><br><br>
-            <input type="submit" value="Update">
-        </div>
+        <form action="#" method="post">
+            <div id="information" class="col-12 py-3">
+                <h6 class="">Information</h6>
+                <label for="device-id">Device ID: {{device_id}}</label>
+                <!-- TODO show ID here instead--><br><br>
+                <label for="device-name">Name:</label>
+                <input type="text" id="device-name" name="device_name"><br><br>
+                <label for="device-room">Room:</label>
+                <select name="roomid" id="roomid">
+                    {% for x in range(0,roomsize): %}
+                    <option value="{{room_id[x]}}">{{room_name[x]}}</option>
+                    {% endfor %}
+                </select><br><br>
+                    <label for="recipient-name" class="col-form-label">Type:</label>
+                        <select name="device_type" id="device_type">
+                            <option value="temperature">temperature</option>
+                            <option value="lights">lights</option>
+                            <option value="appliances">appliances</option>
+                            <option value="security">security</option>
+                        </select>
+                <label for="device-type">Power:</label>
+                <input type="text" id="device-type" name="device_power"><br><br>
+                <input type="submit" value="Update">
+            </div>
+        </form>
 </section>
 
 {% endblock %}

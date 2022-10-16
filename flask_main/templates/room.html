@@ -37,10 +37,10 @@
         <div id="temperature" class="col-12 py-3">
                 <h6 class="">TEMPERATURE</h6>
                 <div class="row">
-                    {% for device in temperature_list: %}
+                    {% for x in range(0,tsize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
+                        <a href="/d={{temp_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{temperature_list[x]}}</i></a>
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -51,10 +51,10 @@
             <div id="lights" class="col-12 py-3">
                 <h6 class="">LIGHTS</h6>
                 <div class="row">
-                    {% for device in light_list: %}
+                    {% for x in range(0,lsize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                            <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
+                            <a href="/d={{light_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{light_list[x]}}</i></a>
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -65,10 +65,10 @@
             <div id="appliances" class="col-12 py-3">
                 <h6 class="">APPLIANCES</h6>
                 <div class="row">
-                    {% for device in appliance_list: %}
+                    {% for x in range(0,asize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
+                        <a href="/d={{app_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{appliance_list[x]}}</i></a>
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -79,10 +79,10 @@
             <div id="security" class="col-12 py-3">
                 <h6 class="">SECURITY</h6>
                 <div class="row">
-                    {% for device in security_list: %}
+                    {% for x in range(0,ssize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
+                        <a href="/d={{ser_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{security_list[x]}}</i></a>
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -102,16 +102,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="#" method="post">
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <input type="text" name="devicename"><br>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Room:</label>
-                        <select name="room" id="room">
+                        <select name="roomid" id="roomid">
                             {% for room in room_list: %}
-                            <option value="Room 1">{{room}}</option>
+                            <option value="{{room}}">{{room}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -126,13 +126,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Device kWh:</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <input type="text" name="devicepower"><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add New Device</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add New Device</button>
             </div>
         </div>
     </div>
