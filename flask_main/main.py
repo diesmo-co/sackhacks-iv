@@ -28,7 +28,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # TODO: check the html page name
-    return render_template("homepage.html")
+    return render_template("index.html")
 
 # roompage pop up for creating new room
 @app.route("/newroom", methods=["POST","GET"])
@@ -48,21 +48,21 @@ def newroom():
         return render_template("newroom.html")
 
 # below need to get some parameter to know which room to go
-@app.route("/<room_name>")
+@app.route("/r=<room_name>")
 def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
-    room = room_name
+    '''room = room_name'''
 
     # filter the dataframe to get all the devices
-    df_devices = rooms_df.filter()
+    # df_devices = rooms_df.filter()
 
     
     # filter the dataframe devices unit categories
-    df_statistics = rooms_df.filter()
+    '''df_statistics = rooms_df.filter()'''
 
-    return render_template("roompage.html", room_name = room_name, df_devices = df_devices, df_statistics=df_statistics)
+    return render_template("room.html")
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])
@@ -87,28 +87,21 @@ def newdevice():
         # TODO: go to csv, max(device_id)+1 will be new id
 
         # TODO:pass the room_name to the roompage
-        return redirect(url_for("devicepage.html", device_name = device_name))
+        return redirect(url_for("device.html", device_name = device_name))
     else:
         # TODO: check the html page name
         # TODO ? : pass a list of available room for the dropdown options
-        return render_template("home.html")
+        return render_template("newdevice.html")
 
 
-@app.route("/<device_name>")
+@app.route("/d=<device_name>")
 def devicepage(device_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO ? : potentially pass the graph & list of devices information
 
-    return render_template("devicepage.html", device_name=device_name)
+    return render_template("device.html", device_name=device_name)
 
-@app.route("/get<device_name>")
-def getfig(device_name):
-    # TODO: check the html page name
-    # TODO: check the header variable name
-    # TODO ? : potentially pass the graph & list of devices information
-
-    return ("devicepage.html", device_name=device_name)
 
 if __name__ == "__main__":
     app.run(debug = True)

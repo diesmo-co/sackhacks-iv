@@ -40,20 +40,34 @@ print("----------------------- basic ---------------------------")
 devices = df_test2['device_name']
 print(devices)
 
-print("----------------- TRY BY CATEGORY -----------------")
+print("----------------- TRY BY CATEGORY 1-----------------")
 # df here only contain power/duration information on specific device
 df_test3 = datalog_df.merge(devices_df, on='device_id')
 df_test4 = df_test3.query("(device_id == 1)")
 print(df_test4)
 
-print("----------------- TRY BY CATEGORY -----------------")
+print("----------------- TRY BY CATEGORY 2-----------------")
 # df here only contain power/duration information on all device on a specific room
 df_test2 = devices_df.query("(room_id == 1)")
 df_test5 = datalog_df.merge(df_test2, on='device_id')
 print(df_test5)
 
-print("----------------- TRY BY CATEGORY -----------------")
+print("----------------- TRY BY CATEGORY 3-----------------")
 # df here only contain power/duration information on all device on a specific room
 df_test6 = datalog_df.merge(devices_df, on='device_id')
 df_test7 = df_test6.merge(rooms_df, on='room_id')
 print(df_test7)
+
+
+print("----------------- get room name in list -----------------")
+rooms = rooms_df['room_name']
+roomslist = rooms.values.tolist()
+print(roomslist)
+
+
+print("----------------- get device name in list in specific room -----------------")
+
+devices_in_room = devices_df.query("(room_id == 1)")
+devices = devices_df['device_name']
+deviceslist = devices.values.tolist()
+print(devices)
