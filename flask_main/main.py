@@ -5,11 +5,15 @@
 # Imports
 from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
+import plotly.express as px
 
-rooms_df = pd.read_csv("Rooms.csv")
-devices_df = pd.read_csv("Devices.csv")
-datalog_df = pd.read_csv("DataLog.csv")
+rooms_df = pd.read_csv("../Rooms.csv")
+devices_df = pd.read_csv("../Devices.csv")
+datalog_df = pd.read_csv("../DataLog.csv")
 
+print(rooms_df.head())
+print(devices_df.head())
+print(datalog_df.head())
 # TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
 # 2. DONE: Creating Flask Routes for endpoint
@@ -26,9 +30,9 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def home():
-    # TODO: check the html page name
-    return render_template("index.html")
+@app.route("/<display_type>/<unit>/<time>")
+def home(display_type="room", unit="kw", time="last-year"):
+    return render_template("index.html", display_type=display_type, unit=unit, time=time)
 
 # # roompage pop up for creating new room
 # @app.route("/newroom", methods=["POST","GET"])
