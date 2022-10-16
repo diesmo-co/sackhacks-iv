@@ -77,8 +77,10 @@ def home(display_type="room", unit="kw", time="last-year"):
                             how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
                     x="timestamp", y="device_kwh", color=color)
         
-        pie_chart = None 
-        return render_template("index.html", line_chart=line_chart.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+        pie_chart = px.pie(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+                                        devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
+                            how='left').groupby([color])["device_kwh"].sum().reset_index(name='device_kwh'), values='device_kwh', names=color) 
+        return render_template("index.html", pie_chart=pie_chart.to_html(full_html=False), line_chart=line_chart.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
     
 @app.route("/load")
 def updateload():
