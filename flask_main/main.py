@@ -44,7 +44,7 @@ app = Flask(__name__)
 
 @app.route("/", methods = ["POST","GET"])
 @app.route("/<display_type>/<unit>/<time>", methods = ["POST","GET"])
-def home(display_type="room", unit="kw", time="last-year"):
+def home(display_type="room", unit="kw", time="last-day"):
     
     if request.method == "POST":
         newroom = request.form["roomname"]
@@ -102,7 +102,8 @@ def updateload():
 
 # below need to get some parameter to know which room to go
 @app.route("/room/<room_id>/", methods = ["POST","GET"])
-def roompage(room_id, ):
+@app.route("/room/<room_id>/<time>", methods = ["POST","GET"])
+def roompage(room_id, time="last-day"):
     if request.method == "POST":
         newdevice_id = int(device_idslist[len(device_idslist)-1])+1
         newdevice_name = request.form["devicename"]
@@ -132,6 +133,19 @@ def roompage(room_id, ):
         # get all devices from this room
         choosen_room = "room_id == "+(room_id)
         devices_in_room = devices_df.query(choosen_room)
+        
+        time_interval = {
+            "last-day": '2021-12-30',
+            "last-week": '2021-12-25',
+            "last-month": '2021-12-01',
+            "last-year": '2021-01-01' 
+        }
+        oldest_time = time_interval[time]
+        line_chart = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+                                        devices_in_room, on='device_id', how='left'), rooms_df, on='room_id', 
+                            how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
+                    x="timestamp", y="device_kwh", color='device_type')
+         
 
         # all device in device_type lights  
         lights_in_room = devices_in_room.query('device_type == "lights"')
@@ -166,12 +180,12 @@ def roompage(room_id, ):
         appsize = len(appliancesdeviceslist)
         sersize = len(securitydeviceslist)
 
-        return render_template("room.html", room_list=roomslist, roomsize=size,
+        return render_template("room.html", line_chart=line_chart.to_html(full_html=False), room_list=roomslist, roomsize=size,
         light_list=lightdeviceslist, light_id=lightdeviceslist_id, lsize=lightsize,
         temperature_list=temperaturedeviceslist, temp_id=temperaturedeviceslist_id, tsize=tempsize,
         appliance_list=appliancesdeviceslist, app_id=appliancesdeviceslist_id, asize=appsize,
         security_list=securitydeviceslist, ser_id=securitydeviceslist_id, ssize=sersize,
-        room_id=rooms_idlist)
+        room_ids=rooms_idlist, room_id=room_id, time=time)
 
 @app.route("/d=<device_id>", methods = ["POST","GET"])
 def devicepage(device_id):
