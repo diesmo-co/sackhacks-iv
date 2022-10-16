@@ -7,9 +7,20 @@ from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
 import plotly.express as px
 
+
+# dataframes for csv files
 rooms_df = pd.read_csv("../Rooms.csv")
 devices_df = pd.read_csv("../Devices.csv")
 datalog_df = pd.read_csv("../DataLog.csv")
+
+# list of room names and is
+# indexes in both list refers to the same room
+rooms = rooms_df['room_name']
+roomslist = rooms.values.tolist()
+rooms_ids = rooms_df['room_id']
+rooms_idlist = rooms_ids.values.tolist()
+size = len(roomslist)
+
 
 print(rooms_df.head())
 print(devices_df.head())
@@ -34,16 +45,17 @@ app = Flask(__name__)
 def home(display_type="room", unit="kw", time="last-year"):
     return render_template("index.html", display_type=display_type, unit=unit, time=time)
 
+
 # # below need to get some parameter to know which room to go
 @app.route("/room/<room_name>/")
 def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
-    room_name = roomslist[int(room_id)]
+    room_name = roomslist[int(room_id)-1]
 
     # get all devices from this room
-    choosen_room = "room_id == "+room_id
+    choosen_room = "room_id == "+(room_id)
     devices_in_room = devices_df.query(choosen_room)
 
     # TODO: names of device type changes based on Yiheng's csv
@@ -74,7 +86,7 @@ def roompage(room_name):
     # filter the dataframe devices unit categories
     '''df_statistics = rooms_df.filter()'''
 
-    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist)
+    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist, room_list=roomslist)
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])
