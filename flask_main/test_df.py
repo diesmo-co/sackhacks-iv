@@ -67,7 +67,32 @@ print(roomslist)
 
 print("----------------- get device name in list in specific room -----------------")
 
-devices_in_room = devices_df.query("(room_id == 1)")
-devices = devices_df['device_name']
+
+rooms_ids = rooms_df['room_id']
+rooms_idlist = rooms_ids.values.tolist()
+choose_room = str(rooms_idlist[0])
+choosen_room = "room_id == "+choose_room
+devices_in_room = devices_df.query(choosen_room)
+
+
+lights_in_room = devices_df.query('device_type == "lights"')['device_name'].values.tolist()
+lightsdevices = lights_in_room
+lightdeviceslist = lightsdevices.values.tolist()
+print(devices_in_room)
+
+temperature_in_room = devices_df.query('device_type == "temperature"')
+print(temperature_in_room)
+
+
+    # all device in device_type appliances  
+appliances_in_room = devices_df.query('device_type == "appliances"')
+print(appliances_in_room)
+    
+    # all device in device_type security  
+security_in_room = devices_df.query('device_type == "security"')
+print(security_in_room)
+
+
+devices = devices_in_room['device_name']
 deviceslist = devices.values.tolist()
 print(devices)

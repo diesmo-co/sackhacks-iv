@@ -6,9 +6,19 @@
 from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
 
+# dataframes for csv files
 rooms_df = pd.read_csv("Rooms.csv")
 devices_df = pd.read_csv("Devices.csv")
 datalog_df = pd.read_csv("DataLog.csv")
+
+# list of room names and is
+# indexes in both list refers to the same room
+rooms = rooms_df['room_name']
+roomslist = rooms.values.tolist()
+rooms_ids = rooms_df['room_id']
+rooms_idlist = rooms_ids.values.tolist()
+
+# list of devices + room 
 
 # TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
@@ -28,7 +38,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # TODO: check the html page name
-    return render_template("index.html")
+    return render_template("index.html", room_list = roomslist)
 
 # roompage pop up for creating new room
 @app.route("/newroom", methods=["POST","GET"])
@@ -53,7 +63,31 @@ def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
-    '''room = room_name'''
+
+    # get all devices from this room
+    choosen_room = "room_id == "+room_name
+    devices_in_room = devices_df.query(choosen_room)
+
+    # TODO: names of device type changes based on Yiheng's csv
+    # all device in device_type lights  
+    lights_in_room = devices_df.query('device_type == "lights"')
+    lightsdevices = lights_in_room['device_name']
+    lightdeviceslist = lightsdevices.values.tolist()
+
+    # all device in device_type temperature  
+    temperature_in_room = devices_df.query('device_type == "temperature"')
+    temperaturedevices = temperature_in_room['device_name']
+    temperaturedeviceslist = temperaturedevices.values.tolist()
+    
+    # all device in device_type appliances  
+    appliances_in_room = devices_df.query('device_type == "appliances"')
+    appliancesdevices = appliances_in_room['device_name']
+    appliancesdeviceslist = appliancesdevices.values.tolist()
+    
+    # all device in device_type security  
+    security_in_room = devices_df.query('device_type == "security"')
+    securitydevices = security_in_room['device_name']
+    securitydeviceslist = securitydevices.values.tolist()
 
     # filter the dataframe to get all the devices
     # df_devices = rooms_df.filter()
@@ -62,7 +96,7 @@ def roompage(room_name):
     # filter the dataframe devices unit categories
     '''df_statistics = rooms_df.filter()'''
 
-    return render_template("room.html")
+    return render_template("room.html", Rooms=room_name, device_list=deviceslist)
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])
