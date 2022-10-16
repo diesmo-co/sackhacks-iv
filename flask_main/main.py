@@ -4,9 +4,11 @@
 
 # Imports
 from flask import Flask, redirect, url_for, render_template, request
-import panda as pd
+import pandas as pd
 
-df1 = pd.read_csv
+rooms_df = pd.read_csv("Rooms.csv")
+devices_df = pd.read_csv("Devices.csv")
+datalog_df = pd.read_csv("DataLog.csv")
 
 # TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
@@ -20,6 +22,8 @@ app = Flask(__name__)
 # roompage
 # popup for creting new device
 # devicepage 
+
+
 
 @app.route("/")
 def home():
@@ -48,9 +52,17 @@ def newroom():
 def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
-    # TODO ? : potentially pass the graph information& list of devices
+    # TODO: potentially pass the graph information& list of devices
+    room = room_name
 
-    return render_template("roompage.html", room_name = room_name)
+    # filter the dataframe to get all the devices
+    df_devices = rooms_df.filter()
+
+    
+    # filter the dataframe devices unit categories
+    df_statistics = rooms_df.filter()
+
+    return render_template("roompage.html", room_name = room_name, df_devices = df_devices, df_statistics=df_statistics)
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])
@@ -87,7 +99,16 @@ def devicepage(device_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO ? : potentially pass the graph & list of devices information
+
     return render_template("devicepage.html", device_name=device_name)
+
+@app.route("/get<device_name>")
+def getfig(device_name):
+    # TODO: check the html page name
+    # TODO: check the header variable name
+    # TODO ? : potentially pass the graph & list of devices information
+
+    return ("devicepage.html", device_name=device_name)
 
 if __name__ == "__main__":
     app.run(debug = True)
