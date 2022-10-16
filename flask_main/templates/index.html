@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-
 <section id="data" class="py-5">
     <div id="parameter-select" class="container">
         <div class="row">
             <div class="col-6 py-3">
-                <h6 class="">TYPE</h6>
+                <h6 class="">TYPE</h6>  
                 <a href="" class="btn btn-primary">Room</a>
                 <a href="" class="btn btn-outline-primary">Device</a>
             </div>
@@ -40,7 +39,6 @@
 
 </section>
 <section id="room-list" class="container">
-    
     {% 
     for x in range(0, size): %}
         <!-- Insert room name -->

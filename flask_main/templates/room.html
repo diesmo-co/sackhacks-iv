@@ -110,19 +110,29 @@
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Room:</label>
                         <select name="room" id="room">
-                            <option value="Room 1">Room 1</option>
+                            {% for room in room_list: %}
+                            <option value="Room 1">{{room}}</option>
+                            {% endfor %}
                         </select>
-                        <!-- <input type="" class="form-control" id="recipient-name"> -->
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Type:</label>
+                            <select name="device_type" id="device_type">
+                                <option value="temperature">temperature</option>
+                                <option value="lights">lights</option>
+                                <option value="appliances">appliances</option>
+                                <option value="security">security</option>
+                            </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Device kWh:</label>
                         <input type="text" class="form-control" id="recipient-name">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
+                <button type="button" class="btn btn-primary">Add New Device</button>
             </div>
         </div>
     </div>

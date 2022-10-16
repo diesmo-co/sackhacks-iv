@@ -7,9 +7,9 @@ from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
 
 # dataframes for csv files
-rooms_df = pd.read_csv("Rooms.csv")
-devices_df = pd.read_csv("Devices.csv")
-datalog_df = pd.read_csv("DataLog.csv")
+rooms_df = pd.read_csv("../Rooms.csv")
+devices_df = pd.read_csv("../Devices.csv")
+datalog_df = pd.read_csv("../DataLog.csv")
 
 # list of room names and is
 # indexes in both list refers to the same room
@@ -37,7 +37,8 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def home():
+@app.route("/<type>/<unit>/<period>")
+def home(type="room", unit="kwh", period="last-day"):
     # TODO: check the html page name
     return render_template("index.html", size=size,room_list = roomslist, room_id=rooms_idlist)
 
@@ -64,10 +65,10 @@ def roompage(room_id):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
-    room_name = roomslist[int(room_id)]
+    room_name = roomslist[int(room_id)-1]
 
     # get all devices from this room
-    choosen_room = "room_id == "+room_id
+    choosen_room = "room_id == "+(room_id)
     devices_in_room = devices_df.query(choosen_room)
 
     # TODO: names of device type changes based on Yiheng's csv
@@ -98,7 +99,7 @@ def roompage(room_id):
     # filter the dataframe devices unit categories
     '''df_statistics = rooms_df.filter()'''
 
-    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist)
+    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist, room_list=roomslist)
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])
