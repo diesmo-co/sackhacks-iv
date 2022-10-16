@@ -40,7 +40,9 @@
                     {% for x in range(0,tsize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{temp_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{temperature_list[x]}}</i></a>
+
+                        <a href="/d={{temp_id[x]}}" class="btn btn-primary w-100" style="width: 100px; height: 100px; font-size: 22px"><p>{{temperature_list[x]}}</p></a>
+
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -54,7 +56,8 @@
                     {% for x in range(0,lsize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                            <a href="/d={{light_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{light_list[x]}}</i></a>
+
+                            <a href="/d={{light_id[x]}}" class="btn btn-primary w-100" style="width: 100px; height: 100px; font-size: 22px"><p>{{light_list[x]}}</p></a>
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -68,7 +71,9 @@
                     {% for x in range(0,asize): %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{app_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{appliance_list[x]}}</i></a>
+
+                        <a href="/d={{app_id[x]}}" class="btn btn-primary w-100" style="width: 100px; height: 100px; font-size: 22px"><p>{{appliance_list[x]}}</p></a>
+
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
@@ -81,8 +86,9 @@
                 <div class="row">
                     {% for x in range(0,ssize): %}
                     <div class="col-3 pt-2 pb-3">
-                        <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d={{ser_id[x]}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{security_list[x]}}</i></a>
+
+                        <a href="/d={{ser_id[x]}}" class="btn btn-primary w-100" style="width: 100px; height: 100px; font-size: 22px"><p>{{security_list[x]}}</p></a>
+
                     </div>
                     {% endfor %}
                     <div class="col-3 pt-2 pb-3">
