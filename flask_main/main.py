@@ -17,6 +17,7 @@ rooms = rooms_df['room_name']
 roomslist = rooms.values.tolist()
 rooms_ids = rooms_df['room_id']
 rooms_idlist = rooms_ids.values.tolist()
+size = len(roomslist)
 
 # list of devices + room 
 
@@ -38,7 +39,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # TODO: check the html page name
-    return render_template("index.html", room_list = roomslist)
+    return render_template("index.html", size=size,room_list = roomslist, room_id=rooms_idlist)
 
 # roompage pop up for creating new room
 @app.route("/newroom", methods=["POST","GET"])
@@ -52,40 +53,41 @@ def newroom():
         # TODO: go to csv, max(room_id)+1 will be new id
 
         # TODO:pass the room_name to the roompage
-        return redirect(url_for("roompage", room_name = room_name))
+        return redirect(url_for("roompage", room_id = 1))
     else:
         # TODO: check the html page name
         return render_template("newroom.html")
 
 # below need to get some parameter to know which room to go
-@app.route("/r=<room_name>")
-def roompage(room_name):
+@app.route("/r=<room_id>")
+def roompage(room_id):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
+    room_name = roomslist[int(room_id)]
 
     # get all devices from this room
-    choosen_room = "room_id == "+room_name
+    choosen_room = "room_id == "+room_id
     devices_in_room = devices_df.query(choosen_room)
 
     # TODO: names of device type changes based on Yiheng's csv
     # all device in device_type lights  
-    lights_in_room = devices_df.query('device_type == "lights"')
+    lights_in_room = devices_in_room.query('device_type == "lights"')
     lightsdevices = lights_in_room['device_name']
     lightdeviceslist = lightsdevices.values.tolist()
 
     # all device in device_type temperature  
-    temperature_in_room = devices_df.query('device_type == "temperature"')
+    temperature_in_room = devices_in_room.query('device_type == "temperature"')
     temperaturedevices = temperature_in_room['device_name']
     temperaturedeviceslist = temperaturedevices.values.tolist()
     
     # all device in device_type appliances  
-    appliances_in_room = devices_df.query('device_type == "appliances"')
+    appliances_in_room = devices_in_room.query('device_type == "appliances"')
     appliancesdevices = appliances_in_room['device_name']
     appliancesdeviceslist = appliancesdevices.values.tolist()
     
     # all device in device_type security  
-    security_in_room = devices_df.query('device_type == "security"')
+    security_in_room = devices_in_room.query('device_type == "security"')
     securitydevices = security_in_room['device_name']
     securitydeviceslist = securitydevices.values.tolist()
 
@@ -96,7 +98,7 @@ def roompage(room_name):
     # filter the dataframe devices unit categories
     '''df_statistics = rooms_df.filter()'''
 
-    return render_template("room.html", Rooms=room_name, device_list=deviceslist)
+    return render_template("room.html", Rooms=room_name, light_list=lightdeviceslist, temperature_list=temperaturedeviceslist, appliance_list=appliancesdeviceslist, security_list=securitydeviceslist)
 
 # devicepage pop up for creating new device
 @app.route("/newdevice", methods=["POST","GET"])

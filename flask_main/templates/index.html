@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudocore</title>
+    <title>Sudocore's EveryIoThing</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 </head>
 <body>
     <section id="header" class="bg-light py-3">
         <h6 class="text-primary text-center fw-bold">
-            Sudocore
+            EveryIoThing
         </h6>
     </section>
     <section id="data" class="py-5">
@@ -52,8 +52,13 @@
 
     </section>
     <section id="room-list" class="container">
-        <!-- Insert room name -->
-        <a href="/r=testroom" class="btn btn-lg btn-primary w-100 mb-3">Room</a>
+        
+        {% 
+        for x in range(0, size): %}
+            <!-- Insert room name -->
+            <a href="/r={{room_id[x]}}" class="btn btn-lg btn-primary w-100 mb-3">{{room_list[x]}}</a>
+
+        {% endfor %}
         <a href="/newroom" class="btn btn-lg btn-outline-primary w-100 mb-3">+ Add Room</a>
     </section>
     <footer id="bottom-nav-bar" class="bg-primary text-center py-3">

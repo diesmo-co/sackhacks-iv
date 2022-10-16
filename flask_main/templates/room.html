@@ -12,7 +12,7 @@
 <body>
     <section id="header" class="bg-light py-3">
         <h6 class="text-primary text-center fw-bold">
-            Rooms
+            {{Rooms}}
         </h6>
     </section>
     <section id="data" class="py-5">
@@ -50,10 +50,12 @@
             <div id="temperature" class="col-12 py-3">
                 <h6 class="">TEMPERATURE</h6>
                 <div class="row">
+                    {% for device in temperature_list: %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d=device1" class="btn btn-primary w-100"><i class="fa-solid fa-temperature-three-quarters fa-3x"></i></a>
+                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
                     </div>
+                    {% endfor %}
                     <div class="col-3 pt-2 pb-3">
                         <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="temperature"><i class="fa-solid fa-plus fa-3x"></i></button>
                     </div>
@@ -62,10 +64,12 @@
             <div id="lights" class="col-12 py-3">
                 <h6 class="">LIGHTS</h6>
                 <div class="row">
+                    {% for device in light_list: %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d=device1" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"></i></a>
+                            <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
                     </div>
+                    {% endfor %}
                     <div class="col-3 pt-2 pb-3">
                         <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="lights"><i class="fa-solid fa-plus fa-3x"></i></button>
                     </div>
@@ -74,10 +78,12 @@
             <div id="appliances" class="col-12 py-3">
                 <h6 class="">APPLIANCES</h6>
                 <div class="row">
+                    {% for device in appliance_list: %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d=device1" class="btn btn-primary w-100"><i class="fa-solid fa-bolt-lightning fa-3x"></i></a>
+                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
                     </div>
+                    {% endfor %}
                     <div class="col-3 pt-2 pb-3">
                         <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="appliances"><i class="fa-solid fa-plus fa-3x"></i></button>
                     </div>
@@ -86,10 +92,12 @@
             <div id="security" class="col-12 py-3">
                 <h6 class="">SECURITY</h6>
                 <div class="row">
+                    {% for device in security_list: %}
                     <div class="col-3 pt-2 pb-3">
                         <!-- TO CHANGCE device 1 is place holder name -->
-                        <a href="/d=device1" class="btn btn-primary w-100"><i class="fa-solid fa-shield fa-3x"></i></a>
+                        <a href="/d={{device}}" class="btn btn-primary w-100"><i class="fa-regular fa-lightbulb fa-3x"><br>{{device}}</i></a>
                     </div>
+                    {% endfor %}
                     <div class="col-3 pt-2 pb-3">
                         <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="security"><i class="fa-solid fa-plus fa-3x"></i></button>
                     </div>

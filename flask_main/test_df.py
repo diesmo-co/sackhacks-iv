@@ -74,23 +74,30 @@ choose_room = str(rooms_idlist[0])
 choosen_room = "room_id == "+choose_room
 devices_in_room = devices_df.query(choosen_room)
 
+print(devices_df)
 
-lights_in_room = devices_df.query('device_type == "lights"')['device_name'].values.tolist()
-lightsdevices = lights_in_room
+lights_in_room = devices_df.query('device_type == "lights"')
+lightsdevices = lights_in_room['device_name']
 lightdeviceslist = lightsdevices.values.tolist()
-print(devices_in_room)
+print(lightdeviceslist)
 
+    # all device in device_type temperature  
 temperature_in_room = devices_df.query('device_type == "temperature"')
-print(temperature_in_room)
-
-
+temperaturedevices = temperature_in_room['device_name']
+temperaturedeviceslist = temperaturedevices.values.tolist()
+print(temperaturedeviceslist)
+    
     # all device in device_type appliances  
 appliances_in_room = devices_df.query('device_type == "appliances"')
-print(appliances_in_room)
+appliancesdevices = appliances_in_room['device_name']
+appliancesdeviceslist = appliancesdevices.values.tolist()
+print(appliancesdeviceslist)
     
     # all device in device_type security  
 security_in_room = devices_df.query('device_type == "security"')
-print(security_in_room)
+securitydevices = security_in_room['device_name']
+securitydeviceslist = securitydevices.values.tolist()
+print(securitydeviceslist)
 
 
 devices = devices_in_room['device_name']
