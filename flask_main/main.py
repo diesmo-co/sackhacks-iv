@@ -62,9 +62,24 @@ def home(display_type="room", unit="kw", time="last-year"):
         return redirect(url_for("updateload"))
 
     else:
-                      
-        return render_template("index.html",display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
-   
+        time_interval = {
+            "last-day": '2021-12-30',
+            "last-week": '2021-12-25',
+            "last-month": '2021-12-01',
+            "last-year": '2021-01-01' 
+        }
+        oldest_time = time_interval[time]
+        
+        color = "room_name" if display_type == "room" else "device_type"
+        
+        line_chart = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+                                        devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
+                            how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
+                    x="timestamp", y="device_kwh", color=color)
+        
+        pie_chart = None 
+        return render_template("index.html", line_chart=line_chart.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+    
 @app.route("/load")
 def updateload():
     global rooms_df
