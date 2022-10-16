@@ -73,11 +73,11 @@ def home(display_type="room", unit="kw", time="last-year"):
 
         color = "room_name" if display_type == "room" else "device_type"
 
-        fig = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+        line_chart = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
                                         devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
                                how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
                       x="timestamp", y="device_kwh", color=color)
-        return render_template("index.html", fig=fig.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+        return render_template("index.html", line_chart=line_chart.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
    
 @app.route("/load")
 def updateload():
