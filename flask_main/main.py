@@ -5,6 +5,8 @@
 # Imports
 from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
+import plotly.express as px
+
 
 # dataframes for csv files
 rooms_df = pd.read_csv("../Rooms.csv")
@@ -19,8 +21,10 @@ rooms_ids = rooms_df['room_id']
 rooms_idlist = rooms_ids.values.tolist()
 size = len(roomslist)
 
-# list of devices + room 
 
+print(rooms_df.head())
+print(devices_df.head())
+print(datalog_df.head())
 # TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
 # 2. DONE: Creating Flask Routes for endpoint
@@ -37,31 +41,14 @@ app = Flask(__name__)
 
 
 @app.route("/")
-@app.route("/<type>/<unit>/<period>")
-def home(type="room", unit="kwh", period="last-day"):
-    # TODO: check the html page name
-    return render_template("index.html", size=size,room_list = roomslist, room_id=rooms_idlist)
+@app.route("/<display_type>/<unit>/<time>")
+def home(display_type="room", unit="kw", time="last-year"):
+    return render_template("index.html", display_type=display_type, unit=unit, time=time)
 
-# roompage pop up for creating new room
-@app.route("/newroom", methods=["POST","GET"])
-def newroom():
-    if request.method == "POST":
-        # new room name get the parameter using post
-        # TODO: check the variable name for the form
-        room_name = request.form["room_name"]
-        # new room id to be added to csv
-        # room_id
-        # TODO: go to csv, max(room_id)+1 will be new id
 
-        # TODO:pass the room_name to the roompage
-        return redirect(url_for("roompage", room_id = 1))
-    else:
-        # TODO: check the html page name
-        return render_template("newroom.html")
-
-# below need to get some parameter to know which room to go
-@app.route("/r=<room_id>")
-def roompage(room_id):
+# # below need to get some parameter to know which room to go
+@app.route("/room/<room_name>/")
+def roompage(room_name):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
