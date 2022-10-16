@@ -22,10 +22,6 @@ rooms_idlist = rooms_ids.values.tolist()
 size = len(roomslist)
 
 
-print(rooms_df.head())
-print(devices_df.head())
-print(datalog_df.head())
-# TODO:
 # 1. DONE: Creating endpoints (GET, POST) adding new devices, new rooms
 # 2. DONE: Creating Flask Routes for endpoint
 
