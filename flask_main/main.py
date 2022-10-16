@@ -48,7 +48,7 @@ def home(display_type="room", unit="kw", time="last-year"):
 
 
 # # below need to get some parameter to know which room to go
-@app.route("/room/<room_name>/")
+@app.route("/room/<room_id>/")
 def roompage(room_id):
     # TODO: check the html page name
     # TODO: check the header variable name
