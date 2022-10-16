@@ -6,6 +6,7 @@
 from flask import Flask, redirect, url_for, render_template, request
 import pandas as pd
 import plotly.express as px
+import csv
 
 
 # dataframes for csv files
@@ -37,29 +38,60 @@ app = Flask(__name__)
 
 
 size = len(roomslist)
-@app.route("/")
-@app.route("/<display_type>/<unit>/<time>")
+@app.route("/", methods = ["POST","GET"])
+@app.route("/<display_type>/<unit>/<time>", methods = ["POST","GET"])
 def home(display_type="room", unit="kw", time="last-year"):
     
-    # Assumes that the latest record is 2021-12-31, which is true for our dataset
-    time_interval = {
-        "last-day": '2021-12-30',
-        "last-week": '2021-12-25',
-        "last-month": '2021-12-01',
-        "last-year": '2021-01-01' 
-    }
-    oldest_time = time_interval[time]
-    
-    color = "room_name" if display_type == "room" else "device_type"
-    
-    fig = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
-                                    devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
-                           how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
-                  x="timestamp", y="device_kwh", color=color)
-    return render_template("index.html", fig=fig.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+    if request.method == "POST":
+        newroom = request.form["roomname"]
+        newid = int(rooms_idlist[size-1])+1
 
+        # TODO: create the new room in csv
+        # create the csv writer
+        with open('../Rooms.csv','a') as f:
+            f.write(str(newid)+","+newroom)
+            f.write("\n")
+        # write a row to the csv file
+        # close the file
+        f.close()      
 
-# # below need to get some parameter to know which room to go
+        return redirect(url_for("updateload"))
+
+    else:
+        # Assumes that the latest record is 2021-12-31, which is true for our dataset
+        time_interval = {
+            "last-day": '2021-12-30',
+            "last-week": '2021-12-25',
+            "last-month": '2021-12-01',
+            "last-year": '2021-01-01' 
+        }
+        oldest_time = time_interval[time]
+
+        color = "room_name" if display_type == "room" else "device_type"
+
+        fig = px.line(pd.merge(pd.merge(datalog_df[datalog_df.timestamp >= oldest_time], 
+                                        devices_df, on='device_id', how='left'), rooms_df, on='room_id', 
+                               how='left').groupby(['timestamp', 'device_type', 'room_name'])["device_kwh"].sum().reset_index(name='device_kwh'), 
+                      x="timestamp", y="device_kwh", color=color)
+        return render_template("index.html", fig=fig.to_html(full_html=False), display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
+   
+@app.route("/load")
+def updateload():
+    global rooms_df
+    global rooms
+    global roomslist
+    global rooms_ids
+    global size
+    rooms_df = pd.read_csv("../Rooms.csv")
+    rooms = rooms_df['room_name']
+    roomslist = rooms.values.tolist()
+    rooms_ids = rooms_df['room_id']
+    rooms_idlist = rooms_ids.values.tolist()
+    size = len(roomslist)
+    id=rooms_idlist[len(rooms_idlist)-1]
+    return redirect(url_for("roompage", room_id=str(id)))
+
+# below need to get some parameter to know which room to go
 @app.route("/room/<room_id>/")
 def roompage(room_id):
     # TODO: check the html page name
