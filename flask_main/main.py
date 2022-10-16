@@ -35,16 +35,16 @@ app = Flask(__name__)
 # devicepage 
 
 
-
+size = len(roomslist)
 @app.route("/")
 @app.route("/<display_type>/<unit>/<time>")
 def home(display_type="room", unit="kw", time="last-year"):
-    return render_template("index.html", display_type=display_type, unit=unit, time=time)
+    return render_template("index.html", display_type=display_type, unit=unit, time=time, size=size, room_id=rooms_idlist,room_list=roomslist)
 
 
 # # below need to get some parameter to know which room to go
 @app.route("/room/<room_name>/")
-def roompage(room_name):
+def roompage(room_id):
     # TODO: check the html page name
     # TODO: check the header variable name
     # TODO: potentially pass the graph information& list of devices
